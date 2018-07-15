@@ -17,26 +17,35 @@ const assertEquals = require('assert');
 // So, for example:
 
 function queueTime(customers, n) {
-  let queue = [];
-  let position = 0;
-  let size = customers.length;
-  while(position < size){
-    let index = 0;
-    while(index < n){
-      if (queue[index] === undefined) queue[index] = new Array ();
-      
-      queue[index].push(customers[position])
-      index ++;
-      position ++;
-    }
-  } 
-  console.log(queue);
-  const total = (accu, value) => {return accu += value};
-  return queue.reduce((acc, array) => {
-      const sum = array.reduce(total);
-      acc = sum > acc ? sum : acc;
-      return acc;
-  },0);
+  let tils = [];
+  let index = 0;
+  while (index < n) {
+    tils.push(0);
+    index ++;
+  }
+  
+  let indexCostumers = 0;
+  const size = customers.length;
+  while (indexCostumers < size) {
+    const min = tils.reduce((acc,val)=> {
+      return acc = (acc === undefined || val < acc) ? val : acc;
+    });
+    const position = tils.indexOf(min);
+    tils[position] += customers[indexCostumers];
+    indexCostumers ++;
+  }
+  return tils.reduce((acc,val)=> {
+    return acc = (acc === undefined || val > acc) ? val : acc;
+  });
+}
+
+function queueTimeV2(customers, n) {
+  var w = new Array(n).fill(0);
+  for (let t of customers) {
+    let idx = w.indexOf(Math.min(...w));
+    w[idx] += t;
+  }
+  return Math.max(...w);
 }
 
 describe("example tests", function() {
