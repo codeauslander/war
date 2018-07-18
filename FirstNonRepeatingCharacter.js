@@ -11,23 +11,28 @@ const assertEquals = require('assert');
 // † Note: the function is called firstNonRepeatingLetter for historical reasons, but your function should handle any Unicode character.
 
 function firstNonRepeatingLetter(s) {
+  let result = '';
   let array = s.split('');
-  console.log(array);
-  console.log(array);
+  let first = true;
   for (index = 0; index < array.length; index++) { 
     const letter = array[index];
     const upperLetter = letter.toUpperCase();
     const lowerLetter = letter.toLowerCase();
-    array.splice(index, 1);
+    
+    array.splice(index,1);
     console.log(array);
-    if (array.indexOf(upperLetter) === -1 
-        && array.indexOf(lowerLetter) === -1) {
-        return letter;
+    if (first && (array.indexOf(upperLetter) === -1 && array.indexOf(letter) === -1)) {
+        
+        result = letter;
+        console.log(s,first,array.indexOf(upperLetter) === -1,array.indexOf(lowerLetter) === -1,result);
+        first = false;
     }
-    array.splice(index, 1, letter);
+    array.splice(index - 1,1,letter);
+    console.log(array);
   };
-  return '';
+  return result;
 }
+
 
 describe('Simple Tests', function() {
   it('should handle simple tests', function() {
